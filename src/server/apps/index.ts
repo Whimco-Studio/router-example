@@ -1,2 +1,4 @@
+import { getRegisteredRoutes } from "@rbxts/router";
+
 export * from "./character";
-export * from "./pets";
+print(getRegisteredRoutes());

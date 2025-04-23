@@ -1,15 +1,24 @@
-import { handleRoute } from "@rbxts/router";
+import { connectWebSocket } from "@rbxts/router";
+import { HttpService } from "@rbxts/services";
+import { routerClient } from "shared/routes/routerClient";
 
-const inputService = game.GetService("UserInputService");
+const ws = connectWebSocket<{ message: string }>("chat/lobby");
 
-inputService.InputBegan.Connect((input, gameProcessedEvent) => {
-	if (gameProcessedEvent) return;
-
-	if (input.KeyCode === Enum.KeyCode.E) {
-		handleRoute("pets:create", game.GetService("Players").LocalPlayer, {
-			name: "Fluffy",
-			type: "cat",
-			level: 1,
-		});
-	}
+ws.onMessage((data) => {
+	print("📩 Server says:", data.message);
 });
+
+task.delay(1, () => {
+	ws.send({ message: HttpService.JSONEncode({ info: "Hello from client!" }) });
+});
+
+task.delay(10, () => {
+	ws.unsubscribe();
+	print("🔌 Disconnected");
+});
+
+print(
+	routerClient["character:create"]({
+		id: "123",
+	}),
+);

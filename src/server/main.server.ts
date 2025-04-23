@@ -1,15 +1,13 @@
-import { makeHello } from "shared/module";
-
+import { createMockWebSocket } from "@rbxts/router/out/core/websocket";
 import "./apps";
-import { getRegisteredRoutes, handleRoute } from "@rbxts/router";
 
-print(getRegisteredRoutes());
+createMockWebSocket("chat/lobby", (data) => {
+	data.onMessage((message) => {
+		print("📩 Client says:", message);
+		data.send({ message: "Hello from server!" });
+	});
 
-const player = game.GetService("Players").LocalPlayer;
-
-print(player);
-handleRoute("pets:create", player, {
-	name: "Fluffy",
-	type: "cat",
-	level: 1,
+	data.onClose(() => {
+		print("🔌 Disconnected");
+	});
 });

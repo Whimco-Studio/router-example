@@ -1,30 +1,41 @@
-import { defineRoute, handleRoute, registerRoute, registerRoutes } from "@rbxts/router";
+import { defineRoute, registerRoutes, type RouteContext, type Middleware } from "@rbxts/router";
 import { CharacterSchema } from "./models";
+import { getQuirkymalHandler, createCharacterHandler } from "./views";
+import { characterMiddleware } from "./middleware";
+import { generateCrudRoutes } from "shared/routes/utils/crud";
 
-registerRoute(
-	defineRoute(CharacterSchema, {
-		name: "character",
-		handler: ({ payload }) => {
-			print(payload.quirkymal);
+// registerRoutes("character", [
+// 	defineRoute(CharacterSchema, {
+// 		name: "get-quirkymal",
+// 		handler: getQuirkymalHandler,
+// 		middleware: [characterMiddleware],
+// 	}),
+// 	defineRoute(CharacterSchema, {
+// 		name: "create",
+// 		handler: createCharacterHandler,
+// 	}),
+// ]);
+
+generateCrudRoutes(
+	"character",
+	{
+		create: CharacterSchema,
+		get: CharacterSchema,
+		update: CharacterSchema,
+		delete: CharacterSchema,
+	},
+	{
+		create: (data) => {
+			print("Creating character", data);
 		},
-	}),
+		get: (data) => {
+			print("Getting character", data);
+		},
+		update: (data) => {
+			print("Updating character", data);
+		},
+		delete: (data) => {
+			print("Deleting character", data);
+		},
+	},
 );
-
-registerRoutes("character", [
-	defineRoute(CharacterSchema, {
-		name: "get-quirkymal",
-		handler: ({ payload }) => {
-			print(payload.quirkymal);
-		},
-	}),
-	defineRoute(CharacterSchema, {
-		name: "create",
-		handler: ({ payload }) => {
-			print(payload); // { age: 10, name: "test" }
-		},
-	}),
-]);
-
-handleRoute("character:create", game.GetService("Players").LocalPlayer, {
-	quirkymal: "test",
-});

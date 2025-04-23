@@ -4,7 +4,8 @@
 	"main": "index.js",
 	"scripts": {
 		"build": "rbxtsc",
-		"watch": "rbxtsc -w"
+		"watch": "rbxtsc -w",
+		"router:generate": "node scripts/generate-router-client.js"
 	},
 	"keywords": [],
 	"author": "",
@@ -24,7 +25,9 @@
 		"typescript": "^5.8.3"
 	},
 	"dependencies": {
-		"@rbxts/router": "^1.0.6",
-		"@rbxts/t": "^3.2.1"
+		"@rbxts/router": "1.0.17",
+		"@rbxts/services": "^1.5.5",
+		"@rbxts/t": "^3.2.1",
+		"ts-morph": "^25.0.1"
 	}
 }
